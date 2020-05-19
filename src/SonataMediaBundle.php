@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\MediaBundle;
 
-use Sonata\CoreBundle\Form\FormHelper;
 use Sonata\MediaBundle\DependencyInjection\Compiler\AddProviderCompilerPass;
 use Sonata\MediaBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use Sonata\MediaBundle\DependencyInjection\Compiler\ThumbnailCompilerPass;
@@ -58,14 +57,16 @@ class SonataMediaBundle extends Bundle
     /**
      * Register form mapping information.
      */
-    public function registerFormMapping()
+    private function registerFormMapping()
     {
-        FormHelper::registerFormTypeMapping([
-            'sonata_media_type' => MediaType::class,
-            'sonata_media_api_form_media' => ApiMediaType::class,
-            'sonata_media_api_form_doctrine_media' => ApiDoctrineMediaType::class,
-            'sonata_media_api_form_gallery' => ApiGalleryType::class,
-            'sonata_media_api_form_gallery_has_media' => ApiGalleryHasMediaType::class,
-        ]);
+        if (class_exists('Sonata\CoreBundle\Form\FormHelper')) {
+            \Sonata\CoreBundle\Form\FormHelper::registerFormTypeMapping([
+                'sonata_media_type' => MediaType::class,
+                'sonata_media_api_form_media' => ApiMediaType::class,
+                'sonata_media_api_form_doctrine_media' => ApiDoctrineMediaType::class,
+                'sonata_media_api_form_gallery' => ApiGalleryType::class,
+                'sonata_media_api_form_gallery_has_media' => ApiGalleryHasMediaType::class,
+            ]);
+        }
     }
 }

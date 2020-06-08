@@ -31,14 +31,8 @@ class FixMediaContextCommand extends BaseCommand
      */
     private $categoryManager;
 
-    /**
-     * @var ContextManagerInterface
-     */
-    private $contextManager;
-
-    public function __construct(MediaManagerInterface $mediaManager, Pool $pool, ContextManagerInterface $contextManager, CategoryManagerInterface $categoryManager = null)
+    public function __construct(MediaManagerInterface $mediaManager, Pool $pool, CategoryManagerInterface $categoryManager = null)
     {
-        $this->contextManager = $contextManager;
         $this->categoryManager = $categoryManager;
         parent::__construct($mediaManager, $pool);
     }
@@ -62,37 +56,36 @@ class FixMediaContextCommand extends BaseCommand
         }
 
         $pool = $this->getMediaPool();
-        $contextManager = $this->contextManager;
         $categoryManager = $this->categoryManager;
 
         foreach ($pool->getContexts() as $context => $contextAttrs) {
-            /** @var ContextInterface $defaultContext */
-            $defaultContext = $contextManager->findOneBy([
-                'id' => $context,
-            ]);
-
-            if (!$defaultContext) {
-                $output->writeln(sprintf(" > default context for '%s' is missing, creating one", $context));
-                $defaultContext = $contextManager->create();
-                $defaultContext->setId($context);
-                $defaultContext->setName(ucfirst($context));
-                $defaultContext->setEnabled(true);
-
-                $contextManager->save($defaultContext);
-            }
-
-            $defaultCategory = $categoryManager->getRootCategory($defaultContext);
-
-            if (!$defaultCategory) {
-                $output->writeln(sprintf(" > default category for '%s' is missing, creating one", $context));
-                $defaultCategory = $categoryManager->create();
-                $defaultCategory->setContext($defaultContext);
-                $defaultCategory->setName(ucfirst($context));
-                $defaultCategory->setEnabled(true);
-                $defaultCategory->setPosition(0);
-
-                $categoryManager->save($defaultCategory);
-            }
+//            /** @var ContextInterface $defaultContext */
+//            $defaultContext = $contextManager->findOneBy([
+//                'id' => $context,
+//            ]);
+//
+//            if (!$defaultContext) {
+//                $output->writeln(sprintf(" > default context for '%s' is missing, creating one", $context));
+//                $defaultContext = $contextManager->create();
+//                $defaultContext->setId($context);
+//                $defaultContext->setName(ucfirst($context));
+//                $defaultContext->setEnabled(true);
+//
+//                $contextManager->save($defaultContext);
+//            }
+//
+//            $defaultCategory = $categoryManager->getRootCategory($defaultContext);
+//
+//            if (!$defaultCategory) {
+//                $output->writeln(sprintf(" > default category for '%s' is missing, creating one", $context));
+//                $defaultCategory = $categoryManager->create();
+//                $defaultCategory->setContext($defaultContext);
+//                $defaultCategory->setName(ucfirst($context));
+//                $defaultCategory->setEnabled(true);
+//                $defaultCategory->setPosition(0);
+//
+//                $categoryManager->save($defaultCategory);
+//            }
         }
 
         $output->writeln('Done!');

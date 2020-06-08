@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\MediaBundle\Command;
 
-use Sonata\ClassificationBundle\Model\ContextInterface;
-use Sonata\ClassificationBundle\Model\ContextManagerInterface;
-use Sonata\MediaBundle\Model\CategoryManagerInterface;
-use Sonata\MediaBundle\Model\MediaManagerInterface;
-use Sonata\MediaBundle\Provider\Pool;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,17 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class FixMediaContextCommand extends BaseCommand
 {
-    /**
-     * @var CategoryManagerInterface
-     */
-    private $categoryManager;
-
-    public function __construct(MediaManagerInterface $mediaManager, Pool $pool, CategoryManagerInterface $categoryManager = null)
-    {
-        $this->categoryManager = $categoryManager;
-        parent::__construct($mediaManager, $pool);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -51,14 +35,14 @@ class FixMediaContextCommand extends BaseCommand
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->categoryManager) {
-            throw new \LogicException('The classification feature is disabled.');
-        }
+//        if (!$this->categoryManager) {
+//            throw new \LogicException('The classification feature is disabled.');
+//        }
+//
+//        $pool = $this->getMediaPool();
+//        $categoryManager = $this->categoryManager;
 
-        $pool = $this->getMediaPool();
-        $categoryManager = $this->categoryManager;
-
-        foreach ($pool->getContexts() as $context => $contextAttrs) {
+//        foreach ($pool->getContexts() as $context => $contextAttrs) {
 //            /** @var ContextInterface $defaultContext */
 //            $defaultContext = $contextManager->findOneBy([
 //                'id' => $context,
@@ -86,7 +70,7 @@ class FixMediaContextCommand extends BaseCommand
 //
 //                $categoryManager->save($defaultCategory);
 //            }
-        }
+//        }
 
         $output->writeln('Done!');
 

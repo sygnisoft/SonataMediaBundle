@@ -21,7 +21,6 @@
         <service id="Sonata\MediaBundle\Command\FixMediaContextCommand" class="Sonata\MediaBundle\Command\FixMediaContextCommand" public="true">
             <argument type="service" id="sonata.media.manager.media"/>
             <argument type="service" id="sonata.media.pool"/>
-            <argument type="service" id="sonata.media.manager.category"/>
             <tag name="console.command"/>
         </service>
         <service id="Sonata\MediaBundle\Command\MigrateToJsonTypeCommand" class="Sonata\MediaBundle\Command\MigrateToJsonTypeCommand" public="true">

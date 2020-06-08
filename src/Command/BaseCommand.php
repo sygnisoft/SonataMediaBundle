@@ -14,22 +14,40 @@ declare(strict_types=1);
 namespace Sonata\MediaBundle\Command;
 
 use Sonata\Doctrine\Model\ManagerInterface;
+use Sonata\MediaBundle\Model\MediaManagerInterface;
 use Sonata\MediaBundle\Provider\Pool;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 
 /**
  * This command can be used to re-generate the thumbnails for all uploaded medias.
  *
  * Useful if you have existing media content and added new formats.
  */
-abstract class BaseCommand extends ContainerAwareCommand
+abstract class BaseCommand extends Command
 {
     /**
-     * @return ManagerInterface
+     * @var MediaManagerInterface
+     */
+    protected $mediaManager;
+
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    public function __construct(MediaManagerInterface $mediaManager, Pool $pool)
+    {
+        parent::__construct();
+        $this->mediaManager = $mediaManager;
+        $this->pool = $pool;
+    }
+
+    /**
+     * @return MediaManagerInterface
      */
     public function getMediaManager()
     {
-        return $this->getContainer()->get('sonata.media.manager.media');
+        return $this->mediaManager;
     }
 
     /**
@@ -37,6 +55,6 @@ abstract class BaseCommand extends ContainerAwareCommand
      */
     public function getMediaPool()
     {
-        return $this->getContainer()->get('sonata.media.pool');
+        return $this->pool;
     }
 }

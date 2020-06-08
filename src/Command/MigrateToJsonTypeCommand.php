@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\MediaBundle\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Sonata\MediaBundle\Model\MediaManagerInterface;
+use Sonata\MediaBundle\Provider\Pool;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,6 +25,17 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MigrateToJsonTypeCommand extends BaseCommand
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(MediaManagerInterface $mediaManager, Pool $pool, EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+        parent::__construct($mediaManager, $pool);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -43,7 +57,7 @@ class MigrateToJsonTypeCommand extends BaseCommand
         $table = $input->getOption('table');
         $column = $input->getOption('column');
         $columnId = $input->getOption('column_id');
-        $connection = $this->getContainer()->get('doctrine.orm.entity_manager')->getConnection();
+        $connection = $this->entityManager->getConnection();
         $medias = $connection->fetchAll("SELECT * FROM $table");
 
         foreach ($medias as $media) {

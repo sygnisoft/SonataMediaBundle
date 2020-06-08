@@ -14,15 +14,36 @@ declare(strict_types=1);
 namespace Sonata\MediaBundle\Command;
 
 use Sonata\ClassificationBundle\Model\ContextInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Sonata\ClassificationBundle\Model\ContextManagerInterface;
+use Sonata\MediaBundle\Model\CategoryManagerInterface;
+use Sonata\MediaBundle\Model\MediaManagerInterface;
+use Sonata\MediaBundle\Provider\Pool;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @final since sonata-project/media-bundle 3.21.0
  */
-class FixMediaContextCommand extends ContainerAwareCommand
+class FixMediaContextCommand extends BaseCommand
 {
+    /**
+     * @var CategoryManagerInterface
+     */
+    private $categoryManager;
+
+    /**
+     * @var ContextManagerInterface
+     */
+    private $contextManager;
+
+    public function __construct(MediaManagerInterface $mediaManager, Pool $pool, ContextManagerInterface $contextManager, CategoryManagerInterface $categoryManager = null)
+    {
+        $this->contextManager = $contextManager;
+        $this->categoryManager = $categoryManager;
+        parent::__construct($mediaManager, $pool);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,13 +58,13 @@ class FixMediaContextCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->getContainer()->has('sonata.media.manager.category')) {
+        if (!$this->categoryManager) {
             throw new \LogicException('The classification feature is disabled.');
         }
 
-        $pool = $this->getContainer()->get('sonata.media.pool');
-        $contextManager = $this->getContainer()->get('sonata.classification.manager.context');
-        $categoryManager = $this->getContainer()->get('sonata.media.manager.category');
+        $pool = $this->getMediaPool();
+        $contextManager = $this->contextManager;
+        $categoryManager = $this->categoryManager;
 
         foreach ($pool->getContexts() as $context => $contextAttrs) {
             /** @var ContextInterface $defaultContext */

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\MediaBundle\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Sonata\Doctrine\Model\ManagerInterface;
+use Sonata\MediaBundle\Provider\Pool;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,6 +29,17 @@ class AddMassMediaCommand extends BaseCommand
      * @var string[]
      */
     protected $setters;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(ManagerInterface $mediaManager, Pool $pool, EntityManagerInterface $entityManager = null)
+    {
+        $this->entityManager = $entityManager;
+        parent::__construct($mediaManager, $pool);
+    }
 
     /**
      * {@inheritdoc}
@@ -110,8 +124,8 @@ class AddMassMediaCommand extends BaseCommand
 
     protected function optimize(): void
     {
-        if ($this->getContainer()->has('doctrine')) {
-            $this->getContainer()->get('doctrine')->getManager()->getUnitOfWork()->clear();
+        if ($this->entityManager) {
+            $this->entityManager->getUnitOfWork()->clear();
         }
     }
 }

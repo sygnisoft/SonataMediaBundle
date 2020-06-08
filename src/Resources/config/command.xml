@@ -4,7 +4,7 @@
         <service id="Sonata\MediaBundle\Command\AddMassMediaCommand" class="Sonata\MediaBundle\Command\AddMassMediaCommand" public="true">
             <argument type="service" id="sonata.media.manager.media"/>
             <argument type="service" id="sonata.media.pool"/>
-            <argument type="service" id="doctrine.default_entity_manager"/>
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
             <tag name="console.command"/>
         </service>
         <service id="Sonata\MediaBundle\Command\AddMediaCommand" class="Sonata\MediaBundle\Command\AddMediaCommand" public="true">
@@ -28,7 +28,7 @@
         <service id="Sonata\MediaBundle\Command\MigrateToJsonTypeCommand" class="Sonata\MediaBundle\Command\MigrateToJsonTypeCommand" public="true">
             <argument type="service" id="sonata.media.manager.media"/>
             <argument type="service" id="sonata.media.pool"/>
-            <argument type="service" id="doctrine.default_entity_manager"/>
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
             <tag name="console.command"/>
         </service>
         <service id="Sonata\MediaBundle\Command\RefreshMetadataCommand" class="Sonata\MediaBundle\Command\RefreshMetadataCommand" public="true">

@@ -18,7 +18,6 @@ use Sonata\ClassificationBundle\Model\ContextManagerInterface;
 use Sonata\MediaBundle\Model\CategoryManagerInterface;
 use Sonata\MediaBundle\Model\MediaManagerInterface;
 use Sonata\MediaBundle\Provider\Pool;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

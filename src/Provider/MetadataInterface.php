@@ -13,27 +13,57 @@ declare(strict_types=1);
 
 namespace Sonata\MediaBundle\Provider;
 
-/**
- * NEXT_MAJOR: Remove CoreBundle dependency.
- */
-interface MetadataInterface extends \Sonata\CoreBundle\Model\MetadataInterface
-{
-    public function getTitle(): string;
+use Sonata\BlockBundle\Meta\MetadataInterface as NewMetadataInterface;
 
-    public function getDescription(): ?string;
-
-    public function getImage(): string;
-
-    public function getDomain(): ?string;
-
+if (interface_exists('Sonata\CoreBundle\Model\MetadataInterface')) {
     /**
-     * @return array<string, mixed>
+     * NEXT_MAJOR: Remove CoreBundle dependency.
      */
-    public function getOptions(): array;
+    interface MetadataInterface extends \Sonata\CoreBundle\Model\MetadataInterface, NewMetadataInterface
+    {
+        public function getTitle(): string;
 
-    /**
-     * @param string $name    The option key
-     * @param mixed  $default The default value if option not found
-     */
-    public function getOption($name, $default = null);
+        public function getDescription(): ?string;
+
+        public function getImage(): ?string;
+
+        public function getDomain(): ?string;
+
+        /**
+         * @return array<string, mixed>
+         */
+        public function getOptions(): array;
+
+        /**
+         * @param string $name    The option key
+         * @param mixed  $default The default value if option not found
+         *
+         * @return mixed
+         */
+        public function getOption($name, $default = null);
+    }
+} else {
+    interface MetadataInterface extends NewMetadataInterface
+    {
+        public function getTitle(): string;
+
+        public function getDescription(): ?string;
+
+        public function getImage(): ?string;
+
+        public function getDomain(): ?string;
+
+        /**
+         * @return array<string, mixed>
+         */
+        public function getOptions(): array;
+
+        /**
+         * @param string $name    The option key
+         * @param mixed  $default The default value if option not found
+         *
+         * @return mixed
+         */
+        public function getOption($name, $default = null);
+    }
 }
